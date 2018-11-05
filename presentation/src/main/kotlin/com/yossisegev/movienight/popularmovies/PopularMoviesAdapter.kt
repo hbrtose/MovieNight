@@ -19,8 +19,8 @@ class PopularMoviesAdapter constructor(private val imageLoader: ImageLoader,
     private val movies: MutableList<Movie> = mutableListOf()
 
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MovieCellViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieCellViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(
                 R.layout.popular_movies_adapter_cell,
                 parent,
                 false)
@@ -31,9 +31,9 @@ class PopularMoviesAdapter constructor(private val imageLoader: ImageLoader,
         return movies.size
     }
 
-    override fun onBindViewHolder(holder: MovieCellViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: MovieCellViewHolder, position: Int) {
         val movie = movies[position]
-        holder?.bind(movie, imageLoader, onMovieSelected)
+        holder.bind(movie, imageLoader, onMovieSelected)
     }
 
     fun addMovies(movies: List<Movie>) {

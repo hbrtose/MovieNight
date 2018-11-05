@@ -1,9 +1,7 @@
 package com.yossisegev.movienight.favorites
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,33 +11,24 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.yossisegev.movienight.R
-import com.yossisegev.movienight.common.App
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
 import kotlinx.android.synthetic.main.fragment_favorite_movies.*
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * Created by Yossi Segev on 11/11/2017.
  */
 class FavoriteMoviesFragment : BaseFragment() {
 
-    @Inject
-    lateinit var factory: FavoriteMoviesVMFactory
-    @Inject
-    lateinit var imageLoader: ImageLoader
-    private lateinit var viewModel: FavoriteMoviesViewModel
+    private val viewModel: FavoriteMoviesViewModel by viewModel()
+    private val imageLoader: ImageLoader by inject()
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var emptyMessage: TextView
     private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        (activity?.application as App).createFavoritesComponent().inject(this)
-        viewModel = ViewModelProviders.of(this, factory).get(FavoriteMoviesViewModel::class.java)
-    }
 
     override fun onResume() {
         super.onResume()
@@ -71,18 +60,13 @@ class FavoriteMoviesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressBar = favorite_movies_progress
-        favoriteMoviesAdapter = FavoriteMoviesAdapter(imageLoader, { movie, view ->
-            navigateToMovieDetailsScreen(movie, view)
-        })
+        favoriteMoviesAdapter = FavoriteMoviesAdapter(imageLoader) { movie, v ->
+            navigateToMovieDetailsScreen(movie, v)
+        }
         recyclerView = favorite_movies_recyclerview
         emptyMessage = favorite_movies_empty_message
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = favoriteMoviesAdapter
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        (activity?.application as App).releaseFavoritesComponent()
     }
 }

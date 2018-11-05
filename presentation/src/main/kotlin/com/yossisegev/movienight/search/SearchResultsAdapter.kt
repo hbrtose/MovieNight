@@ -25,8 +25,8 @@ class SearchResultsAdapter constructor(private val imageLoader: ImageLoader,
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MovieCellViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieCellViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(
                 R.layout.search_results_adapter_row,
                 parent,
                 false)
@@ -37,9 +37,9 @@ class SearchResultsAdapter constructor(private val imageLoader: ImageLoader,
         return movies.size
     }
 
-    override fun onBindViewHolder(holder: MovieCellViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: MovieCellViewHolder, position: Int) {
         val movie = movies[position]
-        holder?.bind(movie, imageLoader, onMovieSelected)
+        holder.bind(movie, imageLoader, onMovieSelected)
     }
 
     class MovieCellViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -20,8 +20,7 @@ class MovieDetailsViewModel(private val getMovieDetails: GetMovieDetails,
                             private val saveFavoriteMovie: SaveFavoriteMovie,
                             private val removeFavoriteMovie: RemoveFavoriteMovie,
                             private val checkFavoriteStatus: CheckFavoriteStatus,
-                            private val mapper: Mapper<MovieEntity, Movie>,
-                            private val movieId: Int) : BaseViewModel() {
+                            private val mapper: Mapper<MovieEntity, Movie>) : BaseViewModel() {
 
     lateinit var movieEntity: MovieEntity
     var viewState: MutableLiveData<MovieDetailsViewState> = MutableLiveData()
@@ -32,7 +31,7 @@ class MovieDetailsViewModel(private val getMovieDetails: GetMovieDetails,
         viewState.value = MovieDetailsViewState(isLoading = true)
     }
 
-    fun getMovieDetails() {
+    fun getMovieDetails(movieId: Int) {
         addDisposable(
                 getMovieDetails.getById(movieId)
                         .map {
@@ -54,7 +53,7 @@ class MovieDetailsViewModel(private val getMovieDetails: GetMovieDetails,
         )
     }
 
-    fun favoriteButtonClicked() {
+    fun favoriteButtonClicked(movieId: Int) {
         addDisposable(checkFavoriteStatus.check(movieId).flatMap {
             when (it) {
                 true -> {

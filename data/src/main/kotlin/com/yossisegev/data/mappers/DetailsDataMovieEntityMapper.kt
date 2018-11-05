@@ -3,14 +3,11 @@ package com.yossisegev.data.mappers
 import com.yossisegev.data.entities.DetailsData
 import com.yossisegev.domain.common.Mapper
 import com.yossisegev.domain.entities.*
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by Yossi Segev on 07/01/2018.
  */
-@Singleton
-class DetailsDataMovieEntityMapper @Inject constructor() : Mapper<DetailsData, MovieEntity>() {
+class DetailsDataMovieEntityMapper: Mapper<DetailsData, MovieEntity>() {
 
     override fun mapFrom(from: DetailsData): MovieEntity {
         val movieEntity = MovieEntity(

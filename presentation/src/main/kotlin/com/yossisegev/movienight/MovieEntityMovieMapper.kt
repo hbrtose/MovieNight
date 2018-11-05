@@ -6,15 +6,12 @@ import com.yossisegev.domain.entities.Review
 import com.yossisegev.movienight.entities.Movie
 import com.yossisegev.movienight.entities.MovieDetails
 import com.yossisegev.movienight.entities.Video
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Created by Yossi Segev on 11/11/2017.
  */
 
-@Singleton
-class MovieEntityMovieMapper @Inject constructor() : Mapper<MovieEntity, Movie>() {
+class MovieEntityMovieMapper: Mapper<MovieEntity, Movie>() {
 
     companion object {
         const val posterBaseUrl = "https://image.tmdb.org/t/p/w342"

@@ -13,14 +13,14 @@ import kotlinx.android.synthetic.main.cell_reviews_adapter.view.*
  */
 class ReviewsAdapter(private val reviews: List<Review>) : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ReviewViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.cell_reviews_adapter, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.cell_reviews_adapter, parent, false)
         return ReviewViewHolder(view)
     }
 
 
-    override fun onBindViewHolder(holder: ReviewViewHolder?, position: Int) {
-        holder?.bind(reviews[position])
+    override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
+        holder.bind(reviews[position])
     }
 
     override fun getItemCount(): Int {

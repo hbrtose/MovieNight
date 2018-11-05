@@ -19,8 +19,8 @@ class FavoriteMoviesAdapter constructor(private val imageLoader: ImageLoader,
 
     private var movies: List<Movie> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MovieCellViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieCellViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(
                 R.layout.favorite_movies_adapter_row,
                 parent,
                 false)
@@ -31,9 +31,9 @@ class FavoriteMoviesAdapter constructor(private val imageLoader: ImageLoader,
         return movies.size
     }
 
-    override fun onBindViewHolder(holder: MovieCellViewHolder?, position: Int) {
+    override fun onBindViewHolder(holder: MovieCellViewHolder, position: Int) {
         val movie = movies[position]
-        holder?.bind(movie, imageLoader, onMovieSelected)
+        holder.bind(movie, imageLoader, onMovieSelected)
     }
 
     fun setMovies(movies: List<Movie>) {

@@ -13,13 +13,13 @@ import kotlinx.android.synthetic.main.videos_adapter_row.view.*
  */
 class VideosAdapter(private val videos: List<Video>, private val callback: (Video) -> (Unit)) : RecyclerView.Adapter<VideosAdapter.VideoViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): VideoViewHolder {
-        val view = LayoutInflater.from(parent?.context).inflate(R.layout.videos_adapter_row, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.videos_adapter_row, parent, false)
         return VideoViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: VideoViewHolder?, position: Int) {
-        holder?.bind(videos[position], callback)
+    override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
+        holder.bind(videos[position], callback)
     }
 
     override fun getItemCount(): Int {

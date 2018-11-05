@@ -1,10 +1,8 @@
 package com.yossisegev.movienight.search
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
@@ -19,15 +17,15 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.yossisegev.movienight.R
-import com.yossisegev.movienight.common.App
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_search_movies.*
+import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 /**
  * Created by Yossi Segev on 11/11/2017.
@@ -45,11 +43,9 @@ class SearchFragment : BaseFragment(), TextWatcher {
         searchSubject.onNext(s.toString())
     }
 
-    @Inject
-    lateinit var factory: SearchVMFactory
-    @Inject
-    lateinit var imageLoader: ImageLoader
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel()
+    private val imageLoader: ImageLoader by inject()
+
     private lateinit var searchEditText: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -61,9 +57,6 @@ class SearchFragment : BaseFragment(), TextWatcher {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        (activity?.application as App).createSearchComponent().inject(this)
-        viewModel = ViewModelProviders.of(this, factory).get(SearchViewModel::class.java)
         searchSubject = PublishSubject.create()
 
         //TODO: Handle screen rotation during debounce
@@ -116,10 +109,10 @@ class SearchFragment : BaseFragment(), TextWatcher {
         searchEditText.addTextChangedListener(this)
         progressBar = search_movies_progress
         noResultsMessage = search_movies_no_results_message
-        searchResultsAdapter = SearchResultsAdapter(imageLoader, { movie, movieView ->
+        searchResultsAdapter = SearchResultsAdapter(imageLoader) { movie, movieView ->
             showSoftKeyboard(false)
             navigateToMovieDetailsScreen(movie, movieView)
-        })
+        }
         recyclerView = search_movies_recyclerview
         recyclerView.layoutManager = LinearLayoutManager(activity)
         recyclerView.adapter = searchResultsAdapter
@@ -145,7 +138,6 @@ class SearchFragment : BaseFragment(), TextWatcher {
         super.onDestroyView()
         showSoftKeyboard(false)
         compositeDisposable.clear()
-        (activity?.application as App).releaseSearchComponent()
     }
 
 }
