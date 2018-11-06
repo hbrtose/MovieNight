@@ -42,7 +42,7 @@ class SearchViewModel(private val searchMovie: SearchMovie,
     }
 
     private fun performSearch(query: String) {
-        Log.d(javaClass.simpleName, "Searching $query")
+        //Log.d(javaClass.simpleName, "Searching $query")
 
         addDisposable(searchMovie.search(query)
                 .flatMap { entityMovieMapper.observable(it) }

@@ -1,8 +1,7 @@
 package com.yossisegev.movienight
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.test.annotation.UiThreadTest
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.yossisegev.domain.MoviesCache
 import com.yossisegev.domain.MoviesRepository
 import com.yossisegev.domain.common.DomainTestUtils
@@ -14,19 +13,33 @@ import com.yossisegev.domain.usecases.RemoveFavoriteMovie
 import com.yossisegev.domain.usecases.SaveFavoriteMovie
 import com.yossisegev.movienight.details.MovieDetailsViewModel
 import com.yossisegev.movienight.details.MovieDetailsViewState
-import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
+import org.junit.ClassRule
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnitRunner
 
 /**
  * Created by Yossi Segev on 19/02/2018.
  */
 
 @Suppress("UNCHECKED_CAST")
-@RunWith(AndroidJUnit4ClassRunner::class)
+@RunWith(MockitoJUnitRunner::class)
 class MovieDetailsViewModelTests {
+
+    companion object {
+        @ClassRule
+        @JvmField
+        var schedulers = RxImmediateSchedulerRule()
+    }
+
+    @Rule
+    @JvmField
+    val rule = InstantTaskExecutorRule()
+
 
     private val testMovieId = 100
     private val movieEntityMovieMapper = MovieEntityMovieMapper()
@@ -38,7 +51,6 @@ class MovieDetailsViewModelTests {
     private lateinit var favoriteStateObserver: Observer<Boolean>
 
     @Before
-    @UiThreadTest
     fun before() {
         moviesRepository = mock(MoviesRepository::class.java)
         moviesCache = mock(MoviesCache::class.java)
@@ -62,13 +74,12 @@ class MovieDetailsViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun showsCorrectDetailsAndFavoriteState() {
         val movieEntity = DomainTestUtils.getTestMovieEntity(testMovieId)
-        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Observable.just(
+        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Single.just(
                 Optional.of(movieEntity)
         ))
-        `when`(moviesCache.get(testMovieId)).thenReturn(Observable.just(Optional.of(movieEntity)))
+        `when`(moviesCache.get(testMovieId)).thenReturn(Single.just(Optional.of(movieEntity)))
 
         movieDetailsViewModel.getMovieDetails(testMovieId)
 
@@ -90,13 +101,12 @@ class MovieDetailsViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun showsErrorWhenFailsToGetMovieFromRepository() {
         val movieEntity = DomainTestUtils.getTestMovieEntity(testMovieId)
         val throwable = Throwable("ERROR!")
 
-        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Observable.error(throwable))
-        `when`(moviesCache.get(testMovieId)).thenReturn(Observable.just(Optional.of(movieEntity)))
+        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Single.error(throwable))
+        `when`(moviesCache.get(testMovieId)).thenReturn(Single.just(Optional.of(movieEntity)))
 
         movieDetailsViewModel.getMovieDetails(testMovieId)
 
@@ -105,12 +115,11 @@ class MovieDetailsViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun showsErrorWhenFailsToGetFavoriteState() {
         val movieEntity = DomainTestUtils.getTestMovieEntity(testMovieId)
 
-        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Observable.just(Optional.empty()))
-        `when`(moviesCache.get(testMovieId)).thenReturn(Observable.just(Optional.of(movieEntity)))
+        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Single.just(Optional.empty()))
+        `when`(moviesCache.get(testMovieId)).thenReturn(Single.just(Optional.of(movieEntity)))
 
         movieDetailsViewModel.getMovieDetails(testMovieId)
 
@@ -118,13 +127,12 @@ class MovieDetailsViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun showsErrorWhenGetMovieFromRepositoryReturnsEmptyOptional() {
         val movieEntity = DomainTestUtils.getTestMovieEntity(testMovieId)
         val throwable = Throwable("ERROR!")
 
-        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Observable.just(Optional.of(movieEntity)))
-        `when`(moviesCache.get(testMovieId)).thenReturn(Observable.error(throwable))
+        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Single.just(Optional.of(movieEntity)))
+        `when`(moviesCache.get(testMovieId)).thenReturn(Single.error(throwable))
 
         movieDetailsViewModel.getMovieDetails(testMovieId)
 
@@ -133,14 +141,13 @@ class MovieDetailsViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun favoriteStateChangesAsExpected() {
         val movieEntity = DomainTestUtils.getTestMovieEntity(testMovieId)
-        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Observable.just(
+        `when`(moviesRepository.getMovie(testMovieId)).thenReturn(Single.just(
                 Optional.of(movieEntity)
         ))
 
-        `when`(moviesCache.get(testMovieId)).thenReturn(Observable.just(Optional.of(movieEntity)))
+        `when`(moviesCache.get(testMovieId)).thenReturn(Single.just(Optional.of(movieEntity)))
 
         movieDetailsViewModel.getMovieDetails(testMovieId)
         verify(favoriteStateObserver).onChanged(true)

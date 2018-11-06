@@ -1,25 +1,38 @@
 package com.yossisegev.movienight
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.test.annotation.UiThreadTest
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.yossisegev.domain.MoviesRepository
 import com.yossisegev.domain.common.DomainTestUtils
 import com.yossisegev.domain.common.TestTransformer
 import com.yossisegev.domain.usecases.SearchMovie
 import com.yossisegev.movienight.search.SearchViewModel
 import com.yossisegev.movienight.search.SearchViewState
-import io.reactivex.Observable
+import io.reactivex.Single
 import junit.framework.Assert.assertEquals
 import org.junit.Before
+import org.junit.ClassRule
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.*
+import org.mockito.junit.MockitoJUnitRunner
 
 
 @Suppress("UNCHECKED_CAST")
-@RunWith(AndroidJUnit4ClassRunner::class)
+@RunWith(MockitoJUnitRunner::class)
 class SearchViewModelTests {
+
+    companion object {
+        @ClassRule
+        @JvmField
+        var schedulers = RxImmediateSchedulerRule()
+    }
+
+    @Rule
+    @JvmField
+    val rule = InstantTaskExecutorRule()
+
 
     private val testQuery = "this is a test query"
     private val movieEntityMovieMapper = MovieEntityMovieMapper()
@@ -27,7 +40,6 @@ class SearchViewModelTests {
     private lateinit var searchViewModel: SearchViewModel
 
     @Before
-    @UiThreadTest
     fun before() {
         movieRepository = mock(MoviesRepository::class.java)
         val searchMovie = SearchMovie(TestTransformer(), movieRepository)
@@ -35,7 +47,6 @@ class SearchViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun testInitialViewState() {
         val viewObserver = mock(Observer::class.java) as Observer<SearchViewState>
         val errorObserver = mock(Observer::class.java) as Observer<Throwable?>
@@ -51,11 +62,10 @@ class SearchViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun testSearchWithResultsShowsCorrectViewStates() {
 
         val movieEntities = DomainTestUtils.generateMovieEntityList()
-        `when`(movieRepository.search(testQuery)).thenReturn(Observable.just(movieEntities))
+        `when`(movieRepository.search(testQuery)).thenReturn(Single.just(movieEntities))
         val viewObserver = ChangeHistoryObserver<SearchViewState>()
         val errorObserver = mock(Observer::class.java) as Observer<Throwable?>
         searchViewModel.viewState.observeForever(viewObserver)
@@ -78,10 +88,9 @@ class SearchViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun testSearchWithNoResultsShowsCorrectViewStates() {
 
-        `when`(movieRepository.search(testQuery)).thenReturn(Observable.just(emptyList()))
+        `when`(movieRepository.search(testQuery)).thenReturn(Single.just(emptyList()))
         val viewObserver = ChangeHistoryObserver<SearchViewState>()
         val errorObserver = mock(Observer::class.java) as Observer<Throwable?>
         searchViewModel.viewState.observeForever(viewObserver)
@@ -106,10 +115,9 @@ class SearchViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun testQueryStringIsEmptyShowsCorrectViewStates() {
 
-        `when`(movieRepository.search(testQuery)).thenReturn(Observable.just(emptyList()))
+        //`when`(movieRepository.search(testQuery)).thenReturn(Single.just(emptyList()))
         val viewObserver = ChangeHistoryObserver<SearchViewState>()
         val errorObserver = mock(Observer::class.java) as Observer<Throwable?>
         searchViewModel.viewState.observeForever(viewObserver)
@@ -126,10 +134,9 @@ class SearchViewModelTests {
     }
 
     @Test
-    @UiThreadTest
     fun testErrorShowsCorrectViewStates() {
         val throwable = Throwable("ERROR!")
-        `when`(movieRepository.search(testQuery)).thenReturn(Observable.error(throwable))
+        `when`(movieRepository.search(testQuery)).thenReturn(Single.error(throwable))
         val viewObserver = ChangeHistoryObserver<SearchViewState>()
         val errorObserver = mock(Observer::class.java) as Observer<Throwable?>
         searchViewModel.viewState.observeForever(viewObserver)
