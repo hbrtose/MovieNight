@@ -31,7 +31,7 @@ class FavoriteMoviesFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.viewState.observe(this, Observer {
-            if (it != null) handleViewState(it)
+            it?.let { view -> handleViewState(view) }
         })
         viewModel.errorState.observe(this, Observer { throwable ->
             throwable?.let {

@@ -105,10 +105,10 @@ class MovieDetailsActivity : AppCompatActivity() {
             details_video_section.visibility = View.VISIBLE
             details_tags.visibility = View.VISIBLE
 
-            state.backdropUrl?.let { imageLoader.load(it, details_backdrop) }
+            state.backdropUrl?.let { backdrop ->  imageLoader.load(backdrop, details_backdrop) }
 
-            state.videos?.let {
-                val videosAdapter = VideosAdapter(it, this::onVideoSelected)
+            state.videos?.let { videos ->
+                val videosAdapter = VideosAdapter(videos, this::onVideoSelected)
                 details_videos.layoutManager = LinearLayoutManager(this)
                 details_videos.adapter = videosAdapter
 
