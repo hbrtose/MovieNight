@@ -120,7 +120,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun handleFavoriteStateChange(favorite: Boolean?) {
         favorite?.let {
-            details_favorite_fab.visibility = View.VISIBLE
+            (details_favorite_fab as View).visibility = View.VISIBLE
             details_favorite_fab.setImageDrawable(
                     if (favorite)
                         ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_36dp)
