@@ -1,6 +1,6 @@
 package com.yossisegev.movienight.di
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import com.squareup.picasso.Picasso
 import com.yossisegev.data.db.MoviesDatabase
 import com.yossisegev.data.db.RoomFavoritesMovieCache
@@ -27,7 +27,7 @@ import com.yossisegev.movienight.favorites.FavoriteMoviesViewModel
 import com.yossisegev.movienight.popularmovies.PopularMoviesViewModel
 import com.yossisegev.movienight.search.SearchViewModel
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.ext.koin.viewModel
+import org.koin.androidx.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 object MapperKeys {

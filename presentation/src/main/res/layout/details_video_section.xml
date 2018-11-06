@@ -31,7 +31,7 @@
         app:layout_constraintStart_toEndOf="@+id/details_video_section_icon"
         app:layout_constraintTop_toTopOf="@+id/details_video_section_icon"/>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/details_videos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

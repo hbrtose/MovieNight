@@ -1,6 +1,6 @@
 package com.yossisegev.movienight.popularmovies
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.yossisegev.domain.common.Mapper
 import com.yossisegev.domain.entities.MovieEntity
 import com.yossisegev.domain.usecases.GetPopularMovies

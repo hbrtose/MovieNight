@@ -1,22 +1,22 @@
 package com.yossisegev.movienight.details
 
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.transition.Slide
 import android.transition.TransitionManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.widget.toast
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import co.lujun.androidtagview.TagContainerLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.yossisegev.movienight.R
 import com.yossisegev.movienight.common.ImageLoader
 import com.yossisegev.movienight.common.SimpleTransitionEndedCallback
@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_movie_details.*
 import kotlinx.android.synthetic.main.details_overview_section.*
 import kotlinx.android.synthetic.main.details_video_section.*
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailsActivity : AppCompatActivity() {
 
@@ -101,7 +101,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         detailsViewModel.favoriteState.observe(this, Observer { favorite -> handleFavoriteStateChange(favorite) })
         detailsViewModel.errorState.observe(this, Observer { throwable ->
             throwable?.let {
-                Toast.makeText(this, throwable.message, Toast.LENGTH_LONG).show()
+                toast(throwable.message?:"")
             }
         })
     }

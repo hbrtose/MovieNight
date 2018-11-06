@@ -1,15 +1,13 @@
 package com.yossisegev.movienight
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-
-import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import android.view.SearchEvent
-import com.yossisegev.movienight.common.App
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.yossisegev.movienight.favorites.FavoriteMoviesFragment
 import com.yossisegev.movienight.popularmovies.PopularMoviesFragment
 import com.yossisegev.movienight.search.SearchFragment
+import androidx.fragment.app.transaction
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -21,9 +19,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, PopularMoviesFragment(), "popular")
-                    .commitNow()
+            supportFragmentManager.transaction {
+                replace(R.id.container, PopularMoviesFragment(), "popular")
+            }
             title = getString(R.string.popular)
         }
 
@@ -39,23 +37,23 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when (item.itemId) {
 
             R.id.action_popular -> {
-                supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, PopularMoviesFragment(), "popular")
-                        .commitNow()
+                supportFragmentManager.transaction {
+                    replace(R.id.container, PopularMoviesFragment(), "popular")
+                }
                 title = getString(R.string.popular)
             }
 
             R.id.action_favorites -> {
-                supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, FavoriteMoviesFragment(), "favorites")
-                        .commitNow()
+                supportFragmentManager.transaction {
+                    replace(R.id.container, FavoriteMoviesFragment(), "favorites")
+                }
                 title = getString(R.string.my_favorites)
             }
 
             R.id.action_search -> {
-                supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, SearchFragment(), "search")
-                        .commitNow()
+                supportFragmentManager.transaction {
+                    replace(R.id.container, SearchFragment(), "search")
+                }
                 title = getString(R.string.search)
             }
         }

@@ -1,6 +1,6 @@
 package com.yossisegev.data.db
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import com.yossisegev.data.entities.MovieData
 
 /**

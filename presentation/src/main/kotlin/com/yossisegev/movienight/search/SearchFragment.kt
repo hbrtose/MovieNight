@@ -1,10 +1,7 @@
 package com.yossisegev.movienight.search
 
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -15,7 +12,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
+import androidx.core.widget.toast
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yossisegev.movienight.R
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
@@ -24,7 +24,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.fragment_search_movies.*
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 /**
@@ -80,7 +80,7 @@ class SearchFragment : BaseFragment(), TextWatcher {
         })
         viewModel.errorState.observe(this, Observer { throwable ->
             throwable?.let {
-                Toast.makeText(activity, throwable.message, Toast.LENGTH_LONG).show()
+                context?.toast(throwable.message?:"")
             }
         })
     }

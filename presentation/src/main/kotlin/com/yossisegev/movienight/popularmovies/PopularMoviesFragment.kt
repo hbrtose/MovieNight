@@ -1,20 +1,20 @@
 package com.yossisegev.movienight.popularmovies
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.Toast
+import androidx.core.widget.toast
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yossisegev.movienight.R
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
 import kotlinx.android.synthetic.main.fragment_popular_movies.*
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Yossi Segev on 11/11/2017.
@@ -43,7 +43,7 @@ class PopularMoviesFragment : BaseFragment() {
         })
         viewModel.errorState.observe(this, Observer { throwable ->
             throwable?.let {
-                Toast.makeText(activity, throwable.message, Toast.LENGTH_LONG).show()
+                context?.toast(throwable.message?:"")
             }
         })
     }

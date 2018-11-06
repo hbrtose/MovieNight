@@ -5,14 +5,16 @@ ext {
     targetSdkVersion = 27
     testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
 
-    androidSupportLibVersion = "27.1.0"
+    androidSupportLibVersion = "28.0.0"
     room = "android.arch.persistence.room:runtime:1.0.0"
     rxJava = "io.reactivex.rxjava2:rxjava:2.1.6"
     retrofit = "com.squareup.retrofit2:retrofit:2.3.0"
     retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:2.3.0"
     retrofitRxJava2Adapter = "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
     koin = "org.koin:koin-core:1.0.1"
-    koinViewModel = "org.koin:koin-android-viewmodel:1.0.1"
+    koinViewModel = "org.koin:koin-androidx-viewmodel:1.0.1"
+    coreKtx = "androidx.core:core-ktx:1.0.0-alpha1"
+    fragmentKtx = "androidx.fragment:fragment-ktx:1.0.0-alpha1"
 
     // Testing
     junit = "junit:junit:4.12"
