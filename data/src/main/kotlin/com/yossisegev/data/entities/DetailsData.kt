@@ -1,6 +1,6 @@
 package com.yossisegev.data.entities
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import com.yossisegev.data.api.ReviewsResult
 import com.yossisegev.data.api.VideoResult
 
@@ -9,34 +9,34 @@ import com.yossisegev.data.api.VideoResult
  */
 data class DetailsData(
 
-        @SerializedName("adult")
+        @field:Json(name = "adult")
         var adult: Boolean = false,
 
 //    @SerializedName("belongs_to_collection")
 //    var belongsToCollection: Any? = null
 
-        @SerializedName("budget")
+        @field:Json(name = "budget")
         var budget: Int? = null,
 
-        @SerializedName("genres")
+        @field:Json(name = "genres")
         var genres: List<GenreData>? = null,
 
-        @SerializedName("videos")
+        @field:Json(name = "videos")
         var videos: VideoResult? = null,
 
-        @SerializedName("reviews")
+        @field:Json(name = "reviews")
         var reviews: ReviewsResult? = null,
 
-        @SerializedName("homepage")
+        @field:Json(name = "homepage")
         var homepage: String? = null,
 
-        @SerializedName("id")
+        @field:Json(name = "id")
         var id: Int = -1,
 
-        @SerializedName("imdb_id")
+        @field:Json(name = "imdb_id")
         var imdbId: String? = null,
 
-        @SerializedName("popularity")
+        @field:Json(name = "popularity")
         var popularity: Double = 0.0,
 
 //    @SerializedName("production_companies")
@@ -47,10 +47,10 @@ data class DetailsData(
 //    @Expose
 //    var productionCountries: List<ProductionCountry>? = null
 
-        @SerializedName("revenue")
+        @field:Json(name = "revenue")
         var revenue: Int? = null,
 
-        @SerializedName("runtime")
+        @field:Json(name = "runtime")
         var runtime: Int? = null,
 
 //    @SerializedName("spoken_languages")
@@ -60,36 +60,36 @@ data class DetailsData(
 //    @SerializedName("status")
 //    var status: String? = null
 
-        @SerializedName("tagline")
+        @field:Json(name = "tagline")
         var tagline: String? = null,
 
-        @SerializedName("video")
+        @field:Json(name = "video")
         var video: Boolean = false,
 
-        @SerializedName("vote_average")
+        @field:Json(name = "vote_average")
         var voteAverage: Double = 0.0,
 
-        @SerializedName("vote_count")
+        @field:Json(name = "vote_count")
         var voteCount: Int = 0,
 
-        @SerializedName("title")
+        @field:Json(name = "title")
         var title: String,
 
-        @SerializedName("poster_path")
+        @field:Json(name = "poster_path")
         var posterPath: String,
 
-        @SerializedName("original_language")
+        @field:Json(name = "original_language")
         var originalLanguage: String,
 
-        @SerializedName("original_title")
+        @field:Json(name = "original_title")
         var originalTitle: String,
 
-        @SerializedName("backdrop_path")
+        @field:Json(name = "backdrop_path")
         var backdropPath: String,
 
-        @SerializedName("overview")
+        @field:Json(name = "overview")
         var overview: String,
 
-        @SerializedName("release_date")
+        @field:Json(name = "release_date")
         var releaseDate: String
 )

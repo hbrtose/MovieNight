@@ -1,6 +1,6 @@
 package com.yossisegev.data.api
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 import com.yossisegev.data.entities.MovieData
 
 /**
@@ -9,6 +9,6 @@ import com.yossisegev.data.entities.MovieData
 class MovieListResult {
 
     var page: Int = 0
-    @SerializedName("results")
+    @field:Json(name = "results")
     lateinit var movies: List<MovieData>
 }

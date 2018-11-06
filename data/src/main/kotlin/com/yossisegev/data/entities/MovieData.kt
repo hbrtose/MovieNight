@@ -2,7 +2,7 @@ package com.yossisegev.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
 
 
 /**
@@ -11,40 +11,40 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "movies")
 data class MovieData(
 
-        @SerializedName("id")
+        @field:Json(name = "id")
         @PrimaryKey
         var id: Int = -1,
 
-        @SerializedName("vote_count")
+        @field:Json(name = "vote_count")
         var voteCount: Int = 0,
 
-        @SerializedName("vote_average")
+        @field:Json(name = "vote_average")
         var voteAverage: Double = 0.0,
 
-        @SerializedName("adult")
+        @field:Json(name = "adult")
         var adult: Boolean = false,
 
-        @SerializedName("popularity")
+        @field:Json(name = "popularity")
         var popularity: Double = 0.0,
 
-        @SerializedName("title")
+        @field:Json(name = "title")
         var title: String,
 
-        @SerializedName("poster_path")
+        @field:Json(name = "poster_path")
         var posterPath: String? = null,
 
-        @SerializedName("original_language")
+        @field:Json(name = "original_language")
         var originalLanguage: String,
 
-        @SerializedName("original_title")
+        @field:Json(name = "original_title")
         var originalTitle: String,
 
-        @SerializedName("backdrop_path")
+        @field:Json(name = "backdrop_path")
         var backdropPath: String? = null,
 
-        @SerializedName("release_date")
+        @field:Json(name = "release_date")
         var releaseDate: String,
 
-        @SerializedName("overview")
+        @field:Json(name = "overview")
         var overview: String? = null
 )

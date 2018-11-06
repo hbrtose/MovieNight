@@ -44,7 +44,7 @@ dependencies {
     implementation rootProject.ext.fragmentKtx
     implementation rootProject.ext.rxJava
     implementation rootProject.ext.retrofit
-    implementation rootProject.ext.retrofitGsonConverter
+    implementation rootProject.ext.retrofitMoshiConverter
     implementation rootProject.ext.retrofitRxJava2Adapter
     implementation rootProject.ext.room
     implementation rootProject.ext.koin
