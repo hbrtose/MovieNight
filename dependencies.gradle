@@ -17,7 +17,7 @@ ext {
     fragmentKtx = "androidx.fragment:fragment-ktx:1.0.0-alpha1"
 
     // Testing
-    junit = "junit:junit:4.12"
+    junit = "androidx.test.ext:junit:1.0.0"
     mockito = "org.mockito:mockito-core:2.8.47"
     androidTestRunner = "com.android.support.test:runner:1.0.1"
 }

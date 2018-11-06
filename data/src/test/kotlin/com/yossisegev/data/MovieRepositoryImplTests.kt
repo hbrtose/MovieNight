@@ -10,7 +10,7 @@ import com.yossisegev.data.utils.TestsUtils
 import com.yossisegev.domain.MoviesRepository
 import com.yossisegev.domain.common.DomainTestUtils.Companion.generateMovieEntityList
 import com.yossisegev.domain.common.TestMoviesCache
-import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.*
@@ -49,7 +49,7 @@ class MovieRepositoryImplTests {
     fun testWhenCacheIsEmptyGetMoviesReturnsMoviesFromApi() {
         val movieListResult = MovieListResult()
         movieListResult.movies = TestsUtils.generateMovieDataList()
-        `when`(api.getPopularMovies()).thenReturn(Observable.just(movieListResult))
+        `when`(api.getPopularMovies()).thenReturn(Single.just(movieListResult))
         movieRepository.getMovies().test()
                 .assertComplete()
                 .assertValue { movies -> movies.size == 5 }
@@ -59,7 +59,7 @@ class MovieRepositoryImplTests {
     fun testSearchReturnsExpectedResults() {
         val movieListResult = MovieListResult()
         movieListResult.movies = TestsUtils.generateMovieDataList()
-        `when`(api.searchMovies("test query")).thenReturn(Observable.just(movieListResult))
+        `when`(api.searchMovies("test query")).thenReturn(Single.just(movieListResult))
         movieRepository.search("test query").test()
                 .assertComplete()
                 .assertValue { results -> results.size == 5 }
@@ -70,7 +70,7 @@ class MovieRepositoryImplTests {
     fun testGetMovieByIdReturnedApiMovie() {
         val detailsData = TestsUtils.generateDetailsData(100)
 
-        `when`(api.getMovieDetails(100)).thenReturn(Observable.just(detailsData))
+        `when`(api.getMovieDetails(100)).thenReturn(Single.just(detailsData))
         movieRepository.getMovie(100).test()
                 .assertComplete()
                 .assertValue { it.hasValue() && it.value == detailsDataMapper.mapFrom(detailsData) }

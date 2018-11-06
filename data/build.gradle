@@ -42,9 +42,8 @@ dependencies {
 
     testImplementation rootProject.ext.junit
     testImplementation rootProject.ext.mockito
-    androidTestImplementation rootProject.ext.androidTestRunner
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    testImplementation "android.arch.persistence.room:testing:1.0.0"
+    testImplementation("androidx.test:runner:1.1.0")
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
 
     implementation project(':domain')
 }

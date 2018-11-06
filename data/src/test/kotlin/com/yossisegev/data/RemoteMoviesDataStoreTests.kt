@@ -11,6 +11,7 @@ import com.yossisegev.data.mappers.DetailsDataMovieEntityMapper
 import com.yossisegev.data.mappers.MovieDataEntityMapper
 import com.yossisegev.data.repositories.RemoteMoviesDataStore
 import io.reactivex.Observable
+import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.`when`
@@ -46,7 +47,7 @@ class RemoteMoviesDataStoreTests {
         val movieListResult = MovieListResult()
         movieListResult.movies = popularMovies
         movieListResult.page = 1
-        `when`(api.getPopularMovies()).thenReturn(Observable.just(movieListResult))
+        `when`(api.getPopularMovies()).thenReturn(Single.just(movieListResult))
 
         remoteMoviesDataStore.getMovies().test()
                 .assertValue { list -> list.size == 5 && list[0].title == "Movie0" }
@@ -67,7 +68,7 @@ class RemoteMoviesDataStoreTests {
                 releaseDate = ""
         )
 
-        `when`(api.getMovieDetails(1)).thenReturn(Observable.just(movieDetailedData))
+        `when`(api.getMovieDetails(1)).thenReturn(Single.just(movieDetailedData))
         remoteMoviesDataStore.getMovieById(1).test()
                 .assertValue { optional ->
                     optional.hasValue() &&
@@ -93,7 +94,7 @@ class RemoteMoviesDataStoreTests {
         val movieListResult = MovieListResult()
         movieListResult.movies = searchResults
 
-        `when`(api.searchMovies("test query")).thenReturn(Observable.just(movieListResult))
+        `when`(api.searchMovies("test query")).thenReturn(Single.just(movieListResult))
         remoteMoviesDataStore.search("test query").test()
                 .assertValue { results -> results.size == 3 }
                 .assertComplete()

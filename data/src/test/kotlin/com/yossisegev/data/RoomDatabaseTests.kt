@@ -1,15 +1,13 @@
 package com.yossisegev.data
 
 import androidx.room.Room
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.yossisegev.data.db.MoviesDao
 import com.yossisegev.data.db.MoviesDatabase
 import com.yossisegev.data.utils.TestsUtils
-import org.junit.After
+import org.junit.*
 import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
@@ -24,9 +22,8 @@ class RoomDatabaseTests {
     @Before
     fun before() {
         database = Room.inMemoryDatabaseBuilder(
-                InstrumentationRegistry.getContext(),
+                InstrumentationRegistry.getInstrumentation().context,
                 MoviesDatabase::class.java).build()
-
         moviesDao = database.getMoviesDao()
     }
 
