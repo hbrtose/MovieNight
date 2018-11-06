@@ -1,8 +1,8 @@
 package com.yossisegev.movienight
 
-import android.arch.lifecycle.Observer
-import android.support.test.annotation.UiThreadTest
-import android.support.test.runner.AndroidJUnit4
+import androidx.lifecycle.Observer
+import androidx.test.annotation.UiThreadTest
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.yossisegev.domain.MoviesRepository
 import com.yossisegev.domain.common.DomainTestUtils
 import com.yossisegev.domain.common.TestTransformer
@@ -10,7 +10,7 @@ import com.yossisegev.domain.usecases.SearchMovie
 import com.yossisegev.movienight.search.SearchViewModel
 import com.yossisegev.movienight.search.SearchViewState
 import io.reactivex.Observable
-import org.junit.Assert.assertEquals
+import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,7 +18,7 @@ import org.mockito.Mockito.*
 
 
 @Suppress("UNCHECKED_CAST")
-@RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4ClassRunner::class)
 class SearchViewModelTests {
 
     private val testQuery = "this is a test query"

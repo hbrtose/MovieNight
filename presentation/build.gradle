@@ -60,8 +60,12 @@ dependencies {
     testImplementation rootProject.ext.junit
     testImplementation rootProject.ext.mockito
     androidTestImplementation rootProject.ext.androidTestRunner
-    androidTestImplementation 'org.mockito:mockito-android:2.8.47'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation("androidx.test:runner:1.1.0")
+    androidTestImplementation("androidx.test.ext:junit:1.0.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.1.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.1.0")
+    androidTestImplementation("androidx.test.ext:truth:1.0.0")
+    androidTestImplementation rootProject.ext.mockito
 
     implementation project(':data')
     implementation project(':domain')
