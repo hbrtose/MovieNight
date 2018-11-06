@@ -5,7 +5,7 @@ import com.yossisegev.domain.common.Mapper
 import com.yossisegev.domain.MoviesCache
 import com.yossisegev.domain.entities.MovieEntity
 import com.yossisegev.domain.entities.Optional
-import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Created by Yossi Segev on 22/01/2018.
@@ -31,13 +31,13 @@ class RoomFavoritesMovieCache(database: MoviesDatabase,
         dao.saveAllMovies(movieEntities.map { entityToDataMapper.mapFrom(it) })
     }
 
-    override fun getAll(): Observable<List<MovieEntity>> {
-        return Observable.fromCallable { dao.getFavorites().map { dataToEntityMapper.mapFrom(it) } }
+    override fun getAll(): Single<List<MovieEntity>> {
+        return Single.fromCallable { dao.getFavorites().map { dataToEntityMapper.mapFrom(it) } }
     }
 
-    override fun get(movieId: Int): Observable<Optional<MovieEntity>> {
+    override fun get(movieId: Int): Single<Optional<MovieEntity>> {
 
-        return Observable.fromCallable {
+        return Single.fromCallable {
             val movieData = dao.get(movieId)
             movieData?.let {
                 Optional.of(dataToEntityMapper.mapFrom(it))
@@ -45,13 +45,13 @@ class RoomFavoritesMovieCache(database: MoviesDatabase,
         }
     }
 
-    override fun isEmpty(): Observable<Boolean> {
-        return Observable.fromCallable { dao.getFavorites().isEmpty() }
+    override fun isEmpty(): Single<Boolean> {
+        return Single.fromCallable { dao.getFavorites().isEmpty() }
     }
 
-    override fun search(query: String): Observable<List<MovieEntity>> {
+    override fun search(query: String): Single<List<MovieEntity>> {
         val searchQuery = "%$query%"
-        return Observable.fromCallable {
+        return Single.fromCallable {
             dao.search(searchQuery).map { dataToEntityMapper.mapFrom(it) }
         }
     }

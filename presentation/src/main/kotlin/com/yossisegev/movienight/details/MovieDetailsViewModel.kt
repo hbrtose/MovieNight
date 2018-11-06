@@ -10,7 +10,7 @@ import com.yossisegev.domain.usecases.SaveFavoriteMovie
 import com.yossisegev.movienight.common.BaseViewModel
 import com.yossisegev.movienight.common.SingleLiveEvent
 import com.yossisegev.movienight.entities.Movie
-import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
 /**
@@ -87,11 +87,11 @@ class MovieDetailsViewModel(private val getMovieDetails: GetMovieDetails,
         favoriteState.value = movie.isFavorite
     }
 
-    private fun saveFavorite(movieEntity: MovieEntity): Observable<Boolean> {
+    private fun saveFavorite(movieEntity: MovieEntity): Single<Boolean> {
         return saveFavoriteMovie.save(movieEntity)
     }
 
-    private fun removeFavorite(movieEntity: MovieEntity): Observable<Boolean> {
+    private fun removeFavorite(movieEntity: MovieEntity): Single<Boolean> {
         return removeFavoriteMovie.remove(movieEntity)
     }
 }

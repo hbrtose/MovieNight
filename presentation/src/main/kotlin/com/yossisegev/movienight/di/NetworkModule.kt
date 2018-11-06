@@ -1,35 +1,34 @@
 package com.yossisegev.movienight.di
 
+import android.content.Context
 import com.yossisegev.data.api.Api
+import com.yossisegev.movienight.R
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module.module
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object ApiProperties {
-    const val BASE_URL = "https://api.themoviedb.org/3/"
-    const val KEY = ""
-}
 
 val networkModule = module(createOnStart = true) {
-    single { createHttpClient() }
-    single { createApi<Api>(get()) }
+    single { createHttpClient(androidContext()) }
+    single { createApi<Api>(androidContext(), get()) }
 }
 
-fun createHttpClient(): OkHttpClient {
+fun createHttpClient(context: Context): OkHttpClient {
     val builder = OkHttpClient.Builder()
             .connectTimeout(60L, TimeUnit.SECONDS)
             .readTimeout(60L, TimeUnit.SECONDS)
-    provideInterceptors().forEach { builder.addInterceptor(it) }
+    provideInterceptors(context).forEach { builder.addInterceptor(it) }
     return builder.build()
 }
 
-inline fun <reified T> createApi(okHttpClient: OkHttpClient): T {
+inline fun <reified T> createApi(context: Context, okHttpClient: OkHttpClient): T {
     val retrofit = Retrofit.Builder()
-            .baseUrl(ApiProperties.BASE_URL)
+            .baseUrl(context.getString(R.string.api_base_url))
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -37,13 +36,13 @@ inline fun <reified T> createApi(okHttpClient: OkHttpClient): T {
     return retrofit.create(T::class.java)
 }
 
-fun provideInterceptors(): List<Interceptor> {
+fun provideInterceptors(context: Context): List<Interceptor> {
     val interceptors = arrayListOf<Interceptor>()
     val keyInterceptor = Interceptor {
         val original = it.request()
         val originalUrl = original.url()
         val url = originalUrl.newBuilder()
-                .addQueryParameter("api_key", ApiProperties.KEY)
+                .addQueryParameter("api_key", context.getString(R.string.api_key))
                 .build()
         val request = original.newBuilder().url(url).build()
         return@Interceptor it.proceed(request)

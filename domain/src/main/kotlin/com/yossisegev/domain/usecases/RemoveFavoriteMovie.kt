@@ -3,8 +3,7 @@ package com.yossisegev.domain.usecases
 import com.yossisegev.domain.MoviesCache
 import com.yossisegev.domain.common.Transformer
 import com.yossisegev.domain.entities.MovieEntity
-import io.reactivex.Observable
-import io.reactivex.ObservableTransformer
+import io.reactivex.Single
 import java.lang.IllegalArgumentException
 
 /**
@@ -17,23 +16,23 @@ class RemoveFavoriteMovie(transformer:Transformer<Boolean>,
         private const val PARAM_MOVIE_ENTITY = "param:movieEntity"
     }
 
-    fun remove(movieEntity: MovieEntity): Observable<Boolean> {
+    fun remove(movieEntity: MovieEntity): Single<Boolean> {
         val data = HashMap<String, MovieEntity>()
         data[PARAM_MOVIE_ENTITY] = movieEntity
         return observable(data)
     }
 
-    override fun createObservable(data: Map<String, Any>?): Observable<Boolean> {
+    override fun createObservable(data: Map<String, Any>?): Single<Boolean> {
 
         val movieEntity = data?.get(PARAM_MOVIE_ENTITY)
 
         movieEntity?.let {
-            return Observable.fromCallable {
+            return Single.fromCallable {
                 val entity = it as MovieEntity
                 moviesCache.remove(entity)
                 return@fromCallable false
             }
-        }?: return Observable.error({ IllegalArgumentException("MovieEntity must be provided.") })
+        }?: return Single.error({ IllegalArgumentException("MovieEntity must be provided.") })
     }
 
 }
