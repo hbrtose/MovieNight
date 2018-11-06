@@ -9,13 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.core.widget.toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yossisegev.movienight.R
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
@@ -45,11 +41,6 @@ class SearchFragment : BaseFragment(), TextWatcher {
 
     private val viewModel: SearchViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
-
-    private lateinit var searchEditText: EditText
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var noResultsMessage: TextView
     private lateinit var searchResultsAdapter: SearchResultsAdapter
     private lateinit var searchSubject: PublishSubject<String>
     private val compositeDisposable = CompositeDisposable()
@@ -61,6 +52,7 @@ class SearchFragment : BaseFragment(), TextWatcher {
 
         //TODO: Handle screen rotation during debounce
         val disposable = searchSubject.debounce(1, TimeUnit.SECONDS)
+                .filter { it.length > 2 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it != searchResultsAdapter.query) {
@@ -86,15 +78,15 @@ class SearchFragment : BaseFragment(), TextWatcher {
     }
 
     private fun handleViewState(state: SearchViewState) {
-        progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+        search_movies_progress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
         val movies = state.movies ?: listOf()
         if (state.showNoResultsMessage) {
-            noResultsMessage.visibility = View.VISIBLE
-            noResultsMessage.text = String.format(
+            search_movies_no_results_message.visibility = View.VISIBLE
+            search_movies_no_results_message.text = String.format(
                     getString(R.string.search_no_results_message,
                             state.lastSearchedQuery))
         } else {
-            noResultsMessage.visibility = View.GONE
+            search_movies_no_results_message.visibility = View.GONE
         }
         searchResultsAdapter.setResults(movies, state.lastSearchedQuery)
     }
@@ -105,18 +97,14 @@ class SearchFragment : BaseFragment(), TextWatcher {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        searchEditText = search_movies_edit_text
-        searchEditText.addTextChangedListener(this)
-        progressBar = search_movies_progress
-        noResultsMessage = search_movies_no_results_message
+        search_movies_edit_text.addTextChangedListener(this)
         searchResultsAdapter = SearchResultsAdapter(imageLoader) { movie, movieView ->
             showSoftKeyboard(false)
             navigateToMovieDetailsScreen(movie, movieView)
         }
-        recyclerView = search_movies_recyclerview
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = searchResultsAdapter
-        searchEditText.requestFocus()
+        search_movies_recyclerview.layoutManager = LinearLayoutManager(activity)
+        search_movies_recyclerview.adapter = searchResultsAdapter
+        search_movies_edit_text.requestFocus()
         showSoftKeyboard(true)
     }
 
@@ -125,13 +113,13 @@ class SearchFragment : BaseFragment(), TextWatcher {
         if (show) {
            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0)
         } else {
-            imm.hideSoftInputFromWindow(searchEditText.windowToken,0)
+            imm.hideSoftInputFromWindow(search_movies_edit_text.windowToken,0)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("lastSearch", searchEditText.text.toString())
+        outState.putString("lastSearch", search_movies_edit_text.text.toString())
     }
 
     override fun onDestroyView() {

@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.core.widget.toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yossisegev.movienight.R
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
@@ -23,9 +21,6 @@ class PopularMoviesFragment : BaseFragment() {
 
     private val viewModel: PopularMoviesViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
     private lateinit var popularMoviesAdapter: PopularMoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +44,7 @@ class PopularMoviesFragment : BaseFragment() {
     }
 
     private fun handleViewState(state: PopularMoviesViewState) {
-        progressBar.visibility = if (state.showLoading) View.VISIBLE else View.GONE
+        popular_movies_progress.visibility = if (state.showLoading) View.VISIBLE else View.GONE
         state.movies?.let { popularMoviesAdapter.addMovies(it) }
     }
 
@@ -59,12 +54,10 @@ class PopularMoviesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = popular_movies_progress
         popularMoviesAdapter = PopularMoviesAdapter(imageLoader) { movie, v ->
             navigateToMovieDetailsScreen(movie, v)
         }
-        recyclerView = popular_movies_recyclerview
-        recyclerView.layoutManager = GridLayoutManager(activity, 2)
-        recyclerView.adapter = popularMoviesAdapter
+        popular_movies_recyclerview.layoutManager = GridLayoutManager(activity, 2)
+        popular_movies_recyclerview.adapter = popularMoviesAdapter
     }
 }

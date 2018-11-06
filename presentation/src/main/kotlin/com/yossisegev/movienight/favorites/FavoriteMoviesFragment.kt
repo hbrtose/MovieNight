@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.core.widget.toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yossisegev.movienight.R
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
@@ -24,10 +21,6 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     private val viewModel: FavoriteMoviesViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var emptyMessage: TextView
     private lateinit var favoriteMoviesAdapter: FavoriteMoviesAdapter
 
     override fun onResume() {
@@ -48,8 +41,8 @@ class FavoriteMoviesFragment : BaseFragment() {
     }
 
     private fun handleViewState(state: FavoritesMoviesViewState) {
-        progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
-        emptyMessage.visibility = if (!state.isLoading && state.isEmpty) View.VISIBLE else View.GONE
+        favorite_movies_progress.visibility = if (state.isLoading) View.VISIBLE else View.GONE
+        favorite_movies_empty_message.visibility = if (!state.isLoading && state.isEmpty) View.VISIBLE else View.GONE
         state.movies?.let { favoriteMoviesAdapter.setMovies(it) }
     }
 
@@ -59,14 +52,11 @@ class FavoriteMoviesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        progressBar = favorite_movies_progress
         favoriteMoviesAdapter = FavoriteMoviesAdapter(imageLoader) { movie, v ->
             navigateToMovieDetailsScreen(movie, v)
         }
-        recyclerView = favorite_movies_recyclerview
-        emptyMessage = favorite_movies_empty_message
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        recyclerView.adapter = favoriteMoviesAdapter
+        favorite_movies_recyclerview.layoutManager = LinearLayoutManager(activity)
+        favorite_movies_recyclerview.adapter = favoriteMoviesAdapter
 
     }
 }
