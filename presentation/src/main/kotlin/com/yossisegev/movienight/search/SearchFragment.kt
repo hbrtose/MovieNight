@@ -106,6 +106,7 @@ class SearchFragment : BaseFragment(), TextWatcher {
         search_movies_recyclerview.adapter = searchResultsAdapter
         search_movies_edit_text.requestFocus()
         showSoftKeyboard(true)
+        activity?.title = getString(R.string.search)
     }
 
     private fun showSoftKeyboard(show: Boolean) {

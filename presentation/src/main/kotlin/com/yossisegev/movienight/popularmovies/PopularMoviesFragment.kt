@@ -59,5 +59,6 @@ class PopularMoviesFragment : BaseFragment() {
         }
         popular_movies_recyclerview.layoutManager = GridLayoutManager(activity, 2)
         popular_movies_recyclerview.adapter = popularMoviesAdapter
+        activity?.title = getString(R.string.popular)
     }
 }

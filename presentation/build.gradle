@@ -56,6 +56,8 @@ dependencies {
     implementation 'co.lujun:androidtagview:1.1.4'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07"
+    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0-alpha07"
 
     testImplementation rootProject.ext.junit
     testImplementation rootProject.ext.mockito
@@ -64,4 +66,5 @@ dependencies {
 
     implementation project(':data')
     implementation project(':domain')
+  implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
 }

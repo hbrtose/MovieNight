@@ -57,6 +57,6 @@ class FavoriteMoviesFragment : BaseFragment() {
         }
         favorite_movies_recyclerview.layoutManager = LinearLayoutManager(activity)
         favorite_movies_recyclerview.adapter = favoriteMoviesAdapter
-
+        activity?.title = getString(R.string.my_favorites)
     }
 }
