@@ -1,6 +1,5 @@
 package com.yossisegev.movienight.search
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.yossisegev.domain.common.Mapper
 import com.yossisegev.domain.entities.MovieEntity

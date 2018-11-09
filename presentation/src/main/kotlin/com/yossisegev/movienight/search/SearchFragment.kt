@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.toast
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yossisegev.data.utils.onTextChanged
 import com.yossisegev.movienight.R
 import com.yossisegev.movienight.common.BaseFragment
 import com.yossisegev.movienight.common.ImageLoader
@@ -26,18 +27,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by Yossi Segev on 11/11/2017.
  */
-class SearchFragment : BaseFragment(), TextWatcher {
-    override fun afterTextChanged(s: Editable?) {
-
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        searchSubject.onNext(s.toString())
-    }
+class SearchFragment : BaseFragment() {
 
     private val viewModel: SearchViewModel by viewModel()
     private val imageLoader: ImageLoader by inject()
@@ -97,7 +87,7 @@ class SearchFragment : BaseFragment(), TextWatcher {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        search_movies_edit_text.addTextChangedListener(this)
+        search_movies_edit_text.onTextChanged { text -> searchSubject.onNext(text) }
         searchResultsAdapter = SearchResultsAdapter(imageLoader) { movie, movieView ->
             showSoftKeyboard(false)
             navigateToMovieDetailsScreen(movie, movieView)

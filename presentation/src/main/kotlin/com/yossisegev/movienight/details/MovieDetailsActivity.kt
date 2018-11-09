@@ -94,7 +94,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
             val transition = Slide()
             transition.excludeTarget(details_poster, true)
-            transition.duration = 750
+            transition.duration = 250
             TransitionManager.beginDelayedTransition(details_root_view, transition)
             details_title.visibility = View.VISIBLE
             details_release_date.visibility = View.VISIBLE
