@@ -11,6 +11,7 @@ import com.yossisegev.domain.entities.MovieEntity
 import com.yossisegev.domain.entities.Optional
 import com.yossisegev.domain.usecases.*
 import io.reactivex.Observable
+import io.reactivex.Single
 import junit.framework.Assert.assertNotNull
 import org.junit.Test
 import org.mockito.Mockito
@@ -25,7 +26,7 @@ class UseCasesTests {
         val movieRepository = Mockito.mock(MoviesRepository::class.java)
         val getMovieDetails = GetMovieDetails(TestTransformer(), movieRepository)
 
-        Mockito.`when`(movieRepository.getMovie(100)).thenReturn(Observable.just(Optional.of(movieEntity)))
+        Mockito.`when`(movieRepository.getMovie(100)).thenReturn(Single.just(Optional.of(movieEntity)))
 
         getMovieDetails.getById(100).test()
                 .assertValue { returnedMovieEntity ->
@@ -38,7 +39,7 @@ class UseCasesTests {
     @Test
     fun getPopularMovies() {
         val movieRepository = Mockito.mock(MoviesRepository::class.java)
-        Mockito.`when`(movieRepository.getMovies()).thenReturn(Observable.just(generateMovieEntityList()))
+        Mockito.`when`(movieRepository.getMovies()).thenReturn(Single.just(generateMovieEntityList()))
         val getPopularMovies = GetPopularMovies(TestTransformer(), movieRepository)
         getPopularMovies.observable().test()
                 .assertValue { results -> results.size == 5 }
@@ -48,7 +49,7 @@ class UseCasesTests {
     @Test
     fun getPopularMoviesNoResultsReturnsEmpty() {
         val movieRepository = Mockito.mock(MoviesRepository::class.java)
-        Mockito.`when`(movieRepository.getMovies()).thenReturn(Observable.just(emptyList()))
+        Mockito.`when`(movieRepository.getMovies()).thenReturn(Single.just(emptyList()))
         val getPopularMovies = GetPopularMovies(TestTransformer(), movieRepository)
         getPopularMovies.observable().test()
                 .assertValue { results -> results.isEmpty() }
@@ -73,7 +74,7 @@ class UseCasesTests {
     @Test
     fun getFavoriteMovies() {
         val moviesCache = Mockito.mock(MoviesCache::class.java)
-        Mockito.`when`(moviesCache.getAll()).thenReturn(Observable.just(generateMovieEntityList()))
+        Mockito.`when`(moviesCache.getAll()).thenReturn(Single.just(generateMovieEntityList()))
         val getFavoriteMovies = GetFavoriteMovies(TestTransformer(), moviesCache)
         getFavoriteMovies.observable().test()
                 .assertValue { results -> results.size == 5 }
@@ -100,7 +101,7 @@ class UseCasesTests {
     fun searchMovies() {
         val movieRepository = Mockito.mock(MoviesRepository::class.java)
         val searchMovie = SearchMovie(TestTransformer(), movieRepository)
-        `when`(movieRepository.search("test query")).thenReturn(Observable.just(generateMovieEntityList()))
+        `when`(movieRepository.search("test query")).thenReturn(Single.just(generateMovieEntityList()))
         searchMovie.search("test query").test()
                 .assertComplete()
                 .assertValue { results -> results.size == 5 }
@@ -109,8 +110,8 @@ class UseCasesTests {
     @Test
     fun testCheckFavoriteStatus() {
         val movieCache = mock(MoviesCache::class.java)
-        `when`(movieCache.get(99)).thenReturn(Observable.just(Optional.empty()))
-        `when`(movieCache.get(100)).thenReturn(Observable.just(Optional.of(DomainTestUtils.getTestMovieEntity(100))))
+        `when`(movieCache.get(99)).thenReturn(Single.just(Optional.empty()))
+        `when`(movieCache.get(100)).thenReturn(Single.just(Optional.of(DomainTestUtils.getTestMovieEntity(100))))
         val checkFavoriteStatus = CheckFavoriteStatus(TestTransformer(), movieCache)
         checkFavoriteStatus.check(99).test()
                 .assertValue { result -> !result }
