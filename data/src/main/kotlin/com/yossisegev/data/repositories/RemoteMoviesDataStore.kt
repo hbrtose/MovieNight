@@ -1,0 +1,36 @@
+package com.yossisegev.data.repositories
+
+import com.yossisegev.data.api.Api
+import com.yossisegev.data.mappers.DetailsDataMovieEntityMapper
+import com.yossisegev.data.mappers.MovieDataEntityMapper
+import com.yossisegev.domain.MoviesDataStore
+import com.yossisegev.domain.entities.MovieEntity
+import com.yossisegev.domain.entities.Optional
+import io.reactivex.Single
+
+/**
+ * Created by Yossi Segev on 11/11/2017.
+ */
+class RemoteMoviesDataStore(private val api: Api) : MoviesDataStore {
+
+    private val movieDataMapper = MovieDataEntityMapper()
+    private val detailedDataMapper = DetailsDataMovieEntityMapper()
+
+    override fun search(query: String): Single<List<MovieEntity>> {
+        return api.searchMovies(query).map { results ->
+            results.movies.map { movieDataMapper.mapFrom(it) }
+        }
+    }
+
+    override fun getMovies(): Single<List<MovieEntity>> {
+        return api.getPopularMovies().map { results ->
+            results.movies.map { movieDataMapper.mapFrom(it) }
+        }
+    }
+
+    override fun getMovieById(movieId: Int): Single<Optional<MovieEntity>> {
+        return api.getMovieDetails(movieId).flatMap { detailedData ->
+            Single.just(Optional.of(detailedDataMapper.mapFrom(detailedData)))
+        }
+    }
+}

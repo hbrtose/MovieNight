@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation rootProject.ext.rxJava
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.retrofitMoshiConverter
+    implementation rootProject.ext.retrofitRxJava2Adapter
+    implementation rootProject.ext.room
+    kapt "android.arch.persistence.room:compiler:1.0.0"
+
+    testImplementation rootProject.ext.junit
+    testImplementation rootProject.ext.mockito
+    testImplementation("androidx.test:runner:1.1.0")
+    testImplementation "androidx.arch.core:core-testing:2.0.0"
+
+    implementation project(':domain')
+}
+repositories {
+    mavenCentral()
+}
