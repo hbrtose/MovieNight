@@ -7,11 +7,11 @@ import io.reactivex.Single
 /**
  * Created by Yossi Segev on 11/11/2017.
  */
-abstract class UseCase<T>(private val transformer: Transformer<T>) {
+abstract class UseCase<P, T>(private val transformer: Transformer<T>) {
 
-    abstract fun createObservable(data: Map<String, Any>? = null): Single<T>
+    abstract fun createObservable(data: P? = null): Single<T>
 
-    fun observable(withData: Map<String, Any>? = null): Single<T> {
+    fun observable(withData: P? = null): Single<T> {
         return createObservable(withData).compose(transformer)
     }
 

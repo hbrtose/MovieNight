@@ -9,8 +9,8 @@ import io.reactivex.Single
  * Created by Yossi Segev on 11/11/2017.
  */
 open class GetPopularMovies(transformer: Transformer<List<MovieEntity>>,
-                            private val moviesRepository: MoviesRepository) : UseCase<List<MovieEntity>>(transformer) {
-    override fun createObservable(data: Map<String, Any>?): Single<List<MovieEntity>> {
+                            private val moviesRepository: MoviesRepository) : UseCase<Any, List<MovieEntity>>(transformer) {
+    override fun createObservable(data: Any?): Single<List<MovieEntity>> {
         return moviesRepository.getMovies()
     }
 

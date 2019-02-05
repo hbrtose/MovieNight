@@ -10,25 +10,17 @@ import java.lang.IllegalArgumentException
  * Created by Yossi Segev on 21/01/2018.
  */
 class RemoveFavoriteMovie(transformer:Transformer<Boolean>,
-                          private val moviesCache: MoviesCache): UseCase<Boolean>(transformer) {
-
-    companion object {
-        private const val PARAM_MOVIE_ENTITY = "param:movieEntity"
-    }
+                          private val moviesCache: MoviesCache): UseCase<MovieEntity, Boolean>(transformer) {
 
     fun remove(movieEntity: MovieEntity): Single<Boolean> {
-        val data = HashMap<String, MovieEntity>()
-        data[PARAM_MOVIE_ENTITY] = movieEntity
-        return observable(data)
+        return observable(movieEntity)
     }
 
-    override fun createObservable(data: Map<String, Any>?): Single<Boolean> {
+    override fun createObservable(data: MovieEntity?): Single<Boolean> {
 
-        val movieEntity = data?.get(PARAM_MOVIE_ENTITY)
-
-        movieEntity?.let {
+        data?.let {
             return Single.fromCallable {
-                val entity = it as MovieEntity
+                val entity = it
                 moviesCache.remove(entity)
                 return@fromCallable false
             }

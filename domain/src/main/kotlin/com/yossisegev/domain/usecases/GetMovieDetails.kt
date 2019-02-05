@@ -12,22 +12,15 @@ import java.lang.IllegalArgumentException
  */
 class GetMovieDetails(
         transformer: Transformer<Optional<MovieEntity>>,
-        private val moviesRepository: MoviesRepository) : UseCase<Optional<MovieEntity>>(transformer) {
-
-    companion object {
-        private const val PARAM_MOVIE_ENTITY = "param:movieEntity"
-    }
+        private val moviesRepository: MoviesRepository) : UseCase<Int, Optional<MovieEntity>>(transformer) {
 
     fun getById(movieId: Int): Single<Optional<MovieEntity>> {
-        val data = HashMap<String, Int>()
-        data[PARAM_MOVIE_ENTITY] = movieId
-        return observable(data)
+        return observable(movieId)
     }
 
-    override fun createObservable(data: Map<String, Any>?): Single<Optional<MovieEntity>> {
-        val movieId = data?.get(PARAM_MOVIE_ENTITY)
-        movieId?.let {
-            return moviesRepository.getMovie(it as Int)
+    override fun createObservable(data: Int?): Single<Optional<MovieEntity>> {
+        data?.let {
+            return moviesRepository.getMovie(it)
         } ?: return Single.error({ IllegalArgumentException("MovieId must be provided.") })
     }
 }
