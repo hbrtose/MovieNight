@@ -50,21 +50,20 @@ dependencies {
     implementation rootProject.ext.koin
     implementation rootProject.ext.koinViewModel
 
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation "android.arch.lifecycle:extensions:1.1.1"
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation rootProject.ext.rxAndroid
+    implementation rootProject.ext.lifecycleExtensions
+    implementation rootProject.ext.picasso
     implementation 'co.lujun:androidtagview:1.1.4'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07"
-    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0-alpha07"
+    debugImplementation rootProject.ext.leakCanaryDebug
+    releaseImplementation rootProject.ext.leakCanaryRelease
+    implementation rootProject.ext.navigationFragment
+    implementation rootProject.ext.navigationUi
 
     testImplementation rootProject.ext.junit
     testImplementation rootProject.ext.mockito
-    testImplementation("androidx.test:runner:1.1.0")
-    testImplementation "androidx.arch.core:core-testing:2.0.0"
+    testImplementation rootProject.ext.androidTestRunner
+    testImplementation rootProject.ext.coreTesting
 
     implementation project(':data')
     implementation project(':domain')
-  implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
 }
